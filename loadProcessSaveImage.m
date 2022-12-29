@@ -16,7 +16,7 @@ function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirect
 % Author: Antonis Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
 
 %% Load image
-imageInitialName    = join([unprocessedImageDirectory,string(filesep),imageName]);
+imageInitialName    = join([unprocessedImageDirectory,string(filesep),imageName],"");
 imageInitial        = imread(imageInitialName);
 
 %% Process image
@@ -26,15 +26,14 @@ imageFinal          = mat2gray(imageInitial);
 
 % Create the processed data base folder and file name
 imageFinalNamesParts        = split(imageInitialName,string(filesep));
-imageFinalNamesParts(end-1) = ([imageFinalNamesParts(end-1),"Processed","_",alias]);
-imageFinalName              = join(imageFinalNamesParts);
+imageFinalNamesParts(end-1) = join([imageFinalNamesParts(end-1),"Processed","_",alias],"");
+imageFinalName              = join(imageFinalNamesParts,"\");
 
 % Create the folder in case it is not exists
-processedImageDirectory = fileparts(imageFinalNames);
+processedImageDirectory = fileparts(imageFinalName);
 if ~exist(processedImageDirectory, 'dir')
     mkdir(processedImageDirectory)
 end
 
 % Save processed image
-save(imageFinalName,imageFinal)
-
+imwrite(imageFinal,imageFinalName);
