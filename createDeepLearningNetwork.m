@@ -13,7 +13,7 @@ function [networkResult,resultPath] = createDeepLearningNetwork(datasetPath)
 % Authors: Antonis Kantounias - Eleutherios Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
 
 %% Constant data
-PERCENTAGEOFTRAINFILES = 0.70;
+PERCENTAGEOFTRAINFILES = 0.80;
 
 %% Load image data
 
