@@ -1,4 +1,4 @@
-function [networkResult,resultPath] = createDeepLearningNetwork(datasetPath)
+function [networkResult,dirNameResult] = createDeepLearningNetwork(datasetPath)
 %% createDeepLearningNetwork
 % Creates and trains a convolutional neural network for image recognition.
 % The network is saved at the datasetPath folder.
@@ -78,18 +78,48 @@ options =   trainingOptions(...
 %% Train the network
 networkTrained =       trainNetwork(imageDataTrain,layers,options);
 
-
 %% Compute the accuracy of the network
 classificationPredicted =  	classify(networkTrained,imageDataValidation);
 classificationReal      =  	imageDataValidation.Labels;   
 networkAccuracy         =   sum(classificationPredicted == classificationReal)/numel(classificationReal);
 
 %% Save network training results
+
 networkResult.networkTrained	=   networkTrained;
 networkResult.networkAccuracy   =   networkAccuracy;
 
-resultPath  = join([datasetPath,"networkResult.m"],string(filesep));
-save(resultPath,'networkResult')
+% Create result directory
+dirNameSplit                    =   split(datasetPath,string(filesep));
+dirNameResult                  =   join([dirNameSplit(1:end-1)',"Results"],string(filesep));
+resultName                      =   dirNameSplit(end);
+
+if ~exist(dirNameResult, 'dir')
+    mkdir(dirNameResult)
+end
+
+% Create result figure directory
+dirNameResultsFigures        	=   join([dirNameResult,"Figures"],string(filesep));
+
+if ~exist(dirNameResultsFigures, 'dir')
+    mkdir(dirNameResultsFigures)
+end
+
+% Create result network directory
+dirNameResultsNetworks       	=   join([dirNameResult,"Networks"],string(filesep));
+
+if ~exist(dirNameResultsNetworks, 'dir')
+    mkdir(dirNameResultsNetworks)
+end
+
+% Save generated figure
+FigList                         = 	findobj(allchild(0), 'flat', 'Type', 'figure');
+FigHandle                       = FigList(1);
+FigHandle.Name                  = resultName;
+savefig(FigHandle, join([dirNameResultsFigures,"\", resultName, ".fig"],""));
+
+% Save generated network structure
+save(join([dirNameResultsNetworks,"\",resultName,".mat"],""),'networkResult')
 
 end
+
 
