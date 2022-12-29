@@ -24,5 +24,7 @@ for iFile = 1:length(unprocessedImageFiles)
         loadProcessSaveImage(unprocessedImageDirectory,alias,imageName);
     end
     
+    
+    
 end
 

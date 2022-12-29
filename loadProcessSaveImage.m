@@ -24,7 +24,25 @@ imageFinal          = mat2gray(imageInitial);
 
 % Create the processed data base folder and file name
 imageFinalNamesParts        = split(imageInitialName,string(filesep));
-imageFinalNamesParts(end-1) = join([imageFinalNamesParts(end-1),"Processed","_",alias],"");
+
+% Find the label of each image file
+if contains(imageFinalNamesParts(end),'In')
+    categoryName = "Inclusion";
+elseif contains(imageFinalNamesParts(end),'Pa')
+    categoryName = "Patch";
+elseif contains(imageFinalNamesParts(end),'PS')
+    categoryName = "Spot";
+else
+    error('Unknown image category')
+end
+
+% Insert category name folder
+imageFinalNamesParts(end-1) = join([imageFinalNamesParts(end-1),"Processed","_",alias,"\",categoryName],"");
+
+% Change image file type
+imageFinalNamesParts(end)   = replace(imageFinalNamesParts(end),'.bmp','.png');
+
+% Generate images final name
 imageFinalName              = join(imageFinalNamesParts,"\");
 
 % Create the folder in case it is not exists
@@ -33,5 +51,7 @@ if ~exist(processedImageDirectory, 'dir')
     mkdir(processedImageDirectory)
 end
 
+
 % Save processed image
+
 imwrite(imageFinal,imageFinalName);
