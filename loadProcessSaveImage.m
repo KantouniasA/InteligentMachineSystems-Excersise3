@@ -11,9 +11,7 @@ function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirect
 % Outpus:
 %     processedImagesDirectory          Directory where the unprocessed data are stored, full name [string]
 %
-% Created by:
-%
-% Author: Antonis Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
+% Authors: Antonis Kantounias - Eleutherios Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
 
 %% Load image
 imageInitialName    = join([unprocessedImageDirectory,string(filesep),imageName],"");
