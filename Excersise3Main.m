@@ -28,10 +28,10 @@ optionValuesCombinations	=	[
                     'Filter7'
                     };
 
-for iCombination = 1:length(aliasses)
+for iDataCombination = 1:length(aliasses)
     % Generate the option values for current combination
-    optionValues    = optionValuesCombinations(iCombination,:);
-    alias           = aliasses{iCombination};
+    optionValues    = optionValuesCombinations(iDataCombination,:);
+    alias           = aliasses{iDataCombination};
     % Generate varagin file
     varargin = cell(1,2*length(optionNames));
     for iOption  = 1:length(optionNames)
@@ -44,7 +44,26 @@ end
 
 %% Generate all possible neural networks
 
-for iCombination = 1:length(aliasses)
-    processedImageDirectory = join([unprocessedImageDirectory,"Processed_",string(aliasses{iCombination})],"");
-    createDeepLearningNetwork(processedImageDirectory)
+% Network possible layers
+networkLayerCombinations    =   {   
+                                [16,32,64,16]
+                                [16,64,128,32]
+                                [16,32,64]
+                                [16,64,32]
+                                };
+                            
+networkAliasses             =   {
+                                'Network1'
+                                'Network2'
+                                'Network3'
+                                'Network4'
+                                };
+
+for iNetworkCombination = 1:length(networkAliasses)
+    for iDataCombination = 1:length(aliasses)
+        networkAlias                = networkAliasses{iNetworkCombination};
+        networkLayers               = networkLayerCombinations{iNetworkCombination};
+        processedImageDirectory     = join([unprocessedImageDirectory,"Processed_",string(aliasses{iDataCombination})],"");
+        createDeepLearningNetwork(processedImageDirectory,networkLayers,networkAlias)
+    end
 end

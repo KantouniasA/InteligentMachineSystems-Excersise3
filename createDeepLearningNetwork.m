@@ -1,10 +1,11 @@
-function [networkResult,dirNameResult] = createDeepLearningNetwork(datasetPath)
+function [networkResult,dirNameResult] = createDeepLearningNetwork(datasetPath,networkLayers,networkAlias)
 %% createDeepLearningNetwork
 % Creates and trains a convolutional neural network for image recognition.
 % The network is saved at the datasetPath folder.
 % 
 % Inputs:
 %     datasetPath        Directory where the processed image data are located       [string]
+%     networkAlias       Network archietecture related naming                       [string]
 %
 % Output:
 %     network           Contains the trained network file and the accuracy result	[structure]
@@ -38,36 +39,29 @@ labelCount          = countEachLabel(imageData);
 
 %% Define network architecture
 
-layers =    [
-    imageInputLayer([resolutionX resolutionY resolutionZ])
-    
-    convolution2dLayer(3,8,'Padding','same')
-    batchNormalizationLayer
-    reluLayer
-    
-    maxPooling2dLayer(2,'Stride',2)
-    
-    convolution2dLayer(3,16,'Padding','same')
-    batchNormalizationLayer
-    reluLayer
-    
-    maxPooling2dLayer(2,'Stride',2)
-    
-    convolution2dLayer(3,32,'Padding','same')
-    batchNormalizationLayer
-    reluLayer
-    
-    fullyConnectedLayer(numOfLabels)
-    softmaxLayer
-    classificationLayer
-            ];
+layers =    imageInputLayer([resolutionX resolutionY resolutionZ]);
+        
+for iLayer = 1:length(networkLayers)
+    layers(end+1:end+4,1) =    	[
+                                convolution2dLayer(3,networkLayers(iLayer),'Padding','same')
+                                batchNormalizationLayer
+                                reluLayer
+                                maxPooling2dLayer(2,'Stride',2)
+                                ];
+end
+
+layers(end:end+2,1) =	[
+                       	fullyConnectedLayer(numOfLabels)
+                        softmaxLayer
+                        classificationLayer
+                        ];
 
 %% Specify training options
 
 options =   trainingOptions(...
                             'sgdm', ...
                             'InitialLearnRate',0.01, ...
-                            'MaxEpochs',20, ...
+                            'MaxEpochs',30, ...
                             'Shuffle','every-epoch', ...
                             'ValidationData',imageDataTrain, ...
                             'ValidationFrequency',15, ...
@@ -115,9 +109,9 @@ end
 FigList                         = 	findobj(allchild(0), 'flat', 'Type', 'figure');
 FigHandle                       = FigList(1);
 FigHandle.Name                  = resultName;
-savefig(FigHandle, join([dirNameResultsFigures,"\", resultName, ".fig"],""));
+savefig(FigHandle, join([dirNameResultsFigures,"\", resultName, networkAlias, ".fig"],""));
 
 % Save generated network structure
-save(join([dirNameResultsNetworks,"\",resultName,".mat"],""),'networkResult')
+save(join([dirNameResultsNetworks,"\",resultName, networkAlias,".mat"],""),'networkResult')
 
 end
