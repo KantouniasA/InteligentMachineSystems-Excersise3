@@ -37,7 +37,7 @@ labelCount          = countEachLabel(imageData);
 % Split the homogenous datastore into the train data store and the validation datastore randomly
 [imageDataTrain,imageDataValidation] = splitEachLabel(imageData,PERCENTAGEOFTRAINFILES,'randomize');
 
-%% Define network architecture
+%% Define network architecture (generate network's layers)
 
 layers =    imageInputLayer([resolutionX resolutionY resolutionZ]);
         
@@ -109,9 +109,9 @@ end
 FigList                         = 	findobj(allchild(0), 'flat', 'Type', 'figure');
 FigHandle                       = FigList(1);
 FigHandle.Name                  = resultName;
-savefig(FigHandle, join([dirNameResultsFigures,"\", resultName, networkAlias, ".fig"],""));
+savefig(FigHandle, join([dirNameResultsFigures,"\", resultName, string(networkAlias), ".fig"],""));
 
 % Save generated network structure
-save(join([dirNameResultsNetworks,"\",resultName, networkAlias,".mat"],""),'networkResult')
+save(join([dirNameResultsNetworks,"\",resultName, string(networkAlias),".mat"],""),'networkResult')
 
 end
