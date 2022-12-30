@@ -15,17 +15,17 @@ function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirect
 %% Add parameters
 p = inputParser;
 p.addParameter('process_imadjust',          true);
-p.addParameter('process_filter2prewitt',	false);
-p.addParameter('process_filter2laplacian',	true);
 p.addParameter('process_imbinarize',        true);
+p.addParameter('process_filter2laplacian',	true);
+p.addParameter('process_filter2prewitt',	false);
 p.addParameter('process_bwareopen',         true);
 p.addParameter('process_imfill',            true);
 
 p.parse(varargin{:})
 process_imadjust            = p.Results.process_imadjust;
+process_imbinarize          = p.Results.process_imbinarize;
 process_filter2prewitt      = p.Results.process_filter2prewitt;
 process_filter2laplacian 	= p.Results.process_filter2laplacian;
-process_imbinarize          = p.Results.process_imbinarize;
 process_bwareopen           = p.Results.process_bwareopen;
 process_imfill              = p.Results.process_imfill;
 

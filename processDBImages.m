@@ -1,4 +1,4 @@
-function processDBImages(unprocessedImageDirectory,alias)
+function processDBImages(unprocessedImageDirectory,alias,varargin)
 %% processDBImages
 % Loads all image files from a specific directory, process the images and
 % save them to an equivalent, processed directory
@@ -21,10 +21,8 @@ for iFile = 1:length(unprocessedImageFiles)
     
     if strcmp(fileExtension,'.bmp')
         imageName = fileName;
-        loadProcessSaveImage(unprocessedImageDirectory,alias,imageName);
+        loadProcessSaveImage(unprocessedImageDirectory,alias,imageName,varargin{:});
     end
-    
-    
     
 end
 
