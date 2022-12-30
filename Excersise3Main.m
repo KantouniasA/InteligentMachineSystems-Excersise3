@@ -8,7 +8,6 @@ optionNames                 =   {
                                 'process_imadjust',	'process_imbinarize',       'process_filter2laplacian',	'process_filter2prewitt',	'process_bwareopen',    'process_imfill'    
                                 };
 
-                
 optionValuesCombinations	=	[ 
                                 false,              false,                      false,                      false,                      false,                  false   % Filter1
                                 true,               false,                      false,                      false,                      false,                  false   % Filter2
@@ -45,3 +44,7 @@ end
 
 %% Generate all possible neural networks
 
+for iCombination = 1:length(aliasses)
+    processedImageDirectory = join([unprocessedImageDirectory,"Processed_",string(aliasses{iCombination})],"");
+    createDeepLearningNetwork(processedImageDirectory)
+end
