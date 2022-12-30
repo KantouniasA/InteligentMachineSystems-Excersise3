@@ -8,6 +8,7 @@ optionNames     =   {
                     'process_imadjust',	'process_imbinarize',       'process_filter2laplacian',	'process_filter2prewitt',	'process_bwareopen',    'process_imfill'    
                     };
 
+
                 
 optionValuesCombinations	=	[ 
                                 false,              false,                      false,                      false,                      false,                  false   % Filter1
