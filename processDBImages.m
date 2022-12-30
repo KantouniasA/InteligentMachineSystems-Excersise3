@@ -4,8 +4,8 @@ function processDBImages(unprocessedImageDirectory,alias,varargin)
 % save them to an equivalent, processed directory
 % 
 % Inputs:
-%     unprocessedImagesDirectory        Directory where the unprocessed data are stored, full name [string]
-%     alias                             Name extension for the processed data [string]
+%     unprocessedImagesDirectory        Directory where the unprocessed data are stored, full name  [string]
+%     alias                             Name extension for the processed data                       [string]
 %
 % Authors: Antonis Kantounias - Eleutherios Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
 
