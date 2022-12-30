@@ -42,7 +42,7 @@ imageFinal          = mat2gray(imageFinal);
 
 % Adjust image intensity
 if process_imadjust
-    imageFinal = imadjust(imageFinal);
+    imageFinal = imadjust(imageFinal,[],[0.8,1]);
 end
 
 % Convert the image into binary using adaptive thresholding
@@ -58,6 +58,7 @@ end
 % Perform filter operation to look for edges (1nd degree derivative detection)
 if process_filter2prewitt
     imageFinal = filter2(fspecial('prewitt'),imageFinal);
+    imageFinal = imadjust(imageFinal);
 end
 
 % Scale correction
