@@ -1,4 +1,4 @@
-function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirectory,alias,imageName)
+function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirectory,alias,imageName,varargin)
 %% loadProcessSaveImage
 % loadProcessSaveImage loads the images of the database folder. Process
 % the images and saves them to a new database folder that will be used for
@@ -12,13 +12,76 @@ function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirect
 %     processedImagesDirectory          Directory where the unprocessed data are stored, full name [string]
 %
 % Authors: Antonis Kantounias - Eleutherios Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
+%% Add parameters
+p = inputParser;
+p.addParameter('process_imadjust',          true);
+p.addParameter('process_filter2prewitt',	false);
+p.addParameter('process_filter2laplacian',	true);
+p.addParameter('process_imbinarize',        true);
+p.addParameter('process_bwareopen',         true);
+p.addParameter('process_imfill',            true);
+
+p.parse(varargin{:})
+process_imadjust            = p.Results.process_imadjust;
+process_filter2prewitt      = p.Results.process_filter2prewitt;
+process_filter2laplacian 	= p.Results.process_filter2laplacian;
+process_imbinarize          = p.Results.process_imbinarize;
+process_bwareopen           = p.Results.process_bwareopen;
+process_imfill              = p.Results.process_imfill;
 
 %% Load image
+
+% Read image file
 imageInitialName    = join([unprocessedImageDirectory,string(filesep),imageName],"");
-imageInitial        = imread(imageInitialName);
+imageFinal          = imread(imageInitialName);
 
 %% Process image
-imageFinal          = mat2gray(imageInitial);
+
+% Scale correction
+imageFinal          = mat2gray(imageFinal);
+
+% Adjust image intensity
+if process_imadjust
+    imageFinal = imadjust(imageFinal);
+end
+
+% Convert the image into binary using adaptive thresholding
+if process_imbinarize
+    imageFinal  = imbinarize(imageFinal,'adaptive','ForegroundPolarity','dark','Sensitivity',0.5);
+end
+
+% Perform filter operation to look for edges (2nd degree derivative detection)
+if process_filter2laplacian
+    imageFinal = filter2(fspecial('laplacian'),imageFinal);
+end
+
+% Perform filter operation to look for edges (1nd degree derivative detection)
+if process_filter2prewitt
+    imageFinal = filter2(fspecial('prewitt'),imageFinal);
+end
+
+% Scale correction
+imageFinal          = mat2gray(imageFinal);
+
+% Convert the image into binary using adaptive thresholding
+if process_imbinarize
+    imageFinal  = imbinarize(imageFinal);
+end
+
+% Remove small objects from binary image
+if process_bwareopen
+    pixelSize  = 2;
+    imageFinal = bwareaopen(imageFinal, pixelSize);
+end
+
+% Fill the holes
+if process_imfill
+    imageFinal(1,:)     = 1-imageFinal(1,:);
+    imageFinal(end,:)   = 1-imageFinal(end,:);
+    imageFinal(:,1)     = 1-imageFinal(:,1);
+    imageFinal(:,end)   = 1-imageFinal(:,end);
+    imageFinal = imfill(imageFinal, 'holes');
+end
 
 %% Save image
 
