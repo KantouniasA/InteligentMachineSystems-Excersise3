@@ -39,10 +39,10 @@ imageFinal          = imread(imageInitialName);
 
 %% Process image
 
-% Scale correction
+% Scale correction 
 imageFinal          = mat2gray(imageFinal);
 
-% Adjust image intensity
+% Adjust image intensity 
 if process_imadjust
     imageFinal = imadjust(imageFinal,[],[0.8,1]);
 end
@@ -52,7 +52,7 @@ if process_average
     imageFinal = filter2(fspecial('average'),imageFinal);
 end
 
-% Convert the image into binary using adaptive thresholding
+% Convert the image into binary using adaptive thresholding 
 if process_imbinarize
     imageFinal  = imbinarize(imageFinal,'adaptive','ForegroundPolarity','dark','Sensitivity',0.5);
 end
@@ -78,8 +78,8 @@ end
 
 % Remove small objects from binary image
 if process_bwareopen
-    pixelSize  = 2;
-    imageFinal = bwareaopen(imageFinal, pixelSize);
+    pixelSize  = 50;
+    imageFinal = bwareaopen(imageFinal, pixelSize, 4);
 end
 
 % Fill the holes
