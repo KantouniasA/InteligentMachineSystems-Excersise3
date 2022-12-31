@@ -16,7 +16,7 @@ optionNames                 =   {
 % Combinations of possible processes                            
 optionValuesCombinations	=	[ 
                                 false,              false,              false,                  false,                      false,                      false,                  false   % Filter1
-                                false,            	false,              false,               	false,                      false,                      false,                  false   % Filter2
+                                true,            	false,              false,               	false,                      false,                      false,                  false   % Filter2
                                 false,            	false,              true,                	false,                      false,                      false,                  false   % Filter3
                                 false,            	false,              false,                	true,                       false,                    	false,                  false   % Filter4     
                                 false,            	false,              true,                 	true,                       false,                    	false,                  false   % Filter5     
@@ -26,6 +26,10 @@ optionValuesCombinations	=	[
                                 false,              true,               true,                	true,                       false,                    	false,                  false   % Filter9
                                 false,              true,               true,                	false,                      true,                    	false,                  false   % Filter10
                                 false,             	false               true,                   false,                      false,                      false,                  false   % Filter11
+                                false,              false,              false,                  true,                       false,                      false,                  false   % Filter12
+                                false,              false,              false,                  false,                      true,                       false,                  false  	% Filter13
+                                false,              true,               false,                  true,                       false,                      false,                  false   % Filter14
+                                false,              true,               false,                  false,                      true,                       false,                  false 	% Filter15
                                 ];
 
 % Equivalent names for each process combination                            
@@ -41,10 +45,14 @@ aliasses        =   {
                     'Filter9'
                     'Filter10'
                     'Filter11'
-                    };
+                    'Filter12'
+                    'Filter13'
+                    'Filter14'
+                    'Filter15'
+                	};
 
 % Generate dataset                
-for iDataCombination = 1:length(aliasses)
+for iDataCombination = 12:15%1:length(aliasses)
     % Generate the option values for current combination
     optionValues    = optionValuesCombinations(iDataCombination,:);
     alias           = aliasses{iDataCombination};
