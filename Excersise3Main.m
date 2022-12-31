@@ -1,24 +1,31 @@
 %% Main program
+% Process the different types of defect images.
+% Generates and trains convolutional networks for defect detection from the processed defect images
+%
+% Authors: Antonis Kantounias - Eleutherios Kantounias, Email: antonis.kantounias@gmail.com, Date: 2022.12.29
+
 unprocessedImageDirectory = "C:\Users\Antonis Kantounias\Documents\ergasies\inteligentMachiningSystems\excersise3\Codes\Data";
 
 %% Create all possible data sets 
 
-% Possible data sets
+% Possible processes
 optionNames                 =   { 
-                                'process_imadjust',	'process_imbinarize',       'process_filter2laplacian',	'process_filter2prewitt',	'process_bwareopen',    'process_imfill'    
+                                'process_imadjust',	'process_imbinarize',	'process_filter2laplacian',	'process_filter2prewitt',	'process_bwareopen',    'process_imfill'    
                                 };
 
+% Combinations of possible processes                            
 optionValuesCombinations	=	[ 
-                                false,              false,                      false,                      false,                      false,                  false   % Filter1
-                                true,               false,                      false,                      false,                      false,                  false   % Filter2
-                                true,               true,                       false,                      false,                      false,                  false   % Filter3
-                                true,               false,                      true,                       false,                    	false,                  false   % Filter4     
-                                true,               true,                       true,                       false,                    	false,                  false   % Filter5     
-                                true,               false,                      false,                      true,                    	false,                  false   % Filter6
-                                false,              false,                      false,                      true,                    	false,                  false   % Filter6
+                                false,              false,                  false,                      false,                      false,                  false   % Filter1
+                                true,               false,               	false,                      false,                      false,                  false   % Filter2
+                                true,               true,                	false,                      false,                      false,                  false   % Filter3
+                                true,               false,                	true,                       false,                    	false,                  false   % Filter4     
+                                true,               true,                 	true,                       false,                    	false,                  false   % Filter5     
+                                true,               false,                 	false,                      true,                    	false,                  false   % Filter6
+                                false,              false,                	false,                      true,                    	false,                  false   % Filter6
                                 ];
- 
- aliasses       =   {
+
+% Equivalent names for each process combination                            
+aliasses        =   {
                     'Filter1'
                     'Filter2'
                     'Filter3'
@@ -28,6 +35,7 @@ optionValuesCombinations	=	[
                     'Filter7'
                     };
 
+% Generate dataset                
 for iDataCombination = 1:length(aliasses)
     % Generate the option values for current combination
     optionValues    = optionValuesCombinations(iDataCombination,:);
@@ -51,7 +59,7 @@ networkLayerCombinations    =   {
                                 [16,32,64]
                                 [16,64,32]
                                 };
-                            
+% Network equivalent names                            
 networkAliasses             =   {
                                 'Network1'
                                 'Network2'
@@ -59,6 +67,7 @@ networkAliasses             =   {
                                 'Network4'
                                 };
 
+% Generate and train the networks                            
 for iNetworkCombination = 1:length(networkAliasses)
     for iDataCombination = 1:length(aliasses)
         networkAlias                = networkAliasses{iNetworkCombination};
