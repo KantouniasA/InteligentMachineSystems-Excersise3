@@ -15,6 +15,7 @@ function [processedImageDirectory] = loadProcessSaveImage(unprocessedImageDirect
 %% Add parameters
 p = inputParser;
 p.addParameter('process_imadjust',          true);
+p.addParameter('process_average',           false);
 p.addParameter('process_imbinarize',        true);
 p.addParameter('process_filter2laplacian',	true);
 p.addParameter('process_filter2prewitt',	false);
@@ -23,6 +24,7 @@ p.addParameter('process_imfill',            true);
 
 p.parse(varargin{:})
 process_imadjust            = p.Results.process_imadjust;
+process_average           	= p.Results.process_average;
 process_imbinarize          = p.Results.process_imbinarize;
 process_filter2prewitt      = p.Results.process_filter2prewitt;
 process_filter2laplacian 	= p.Results.process_filter2laplacian;
@@ -43,6 +45,11 @@ imageFinal          = mat2gray(imageFinal);
 % Adjust image intensity
 if process_imadjust
     imageFinal = imadjust(imageFinal,[],[0.8,1]);
+end
+
+% Average filter
+if process_average
+    imageFinal = filter2(fspecial('average'),imageFinal);
 end
 
 % Convert the image into binary using adaptive thresholding
